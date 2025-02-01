@@ -120,6 +120,19 @@ return {
 
 		-- Nix LSP
 		require('lspconfig').nixd.setup({})
+
+		-- LaTeX LSP
+		require('lspconfig').texlab.setup({
+			settings = {
+				texlab = {
+					build = {
+						executable = "latexmk",
+						args = { "-pdf", "-pvc", "%f" },
+						onSave = true,
+					}
+				}
+			}
+		})
 	end,
 	
 }
