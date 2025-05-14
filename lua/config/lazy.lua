@@ -24,7 +24,7 @@ vim.wo.relativenumber = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 
-vim.keymap.set('n', '<leader>ee', ':Ex <CR>', { desc = 'Explore' })
+vim.keymap.set('n', '<leader>fe', ':Ex <CR>', { desc = 'Explore' })
 vim.keymap.set('n', '<leader>t', ':terminal <CR>', { desc = 'Terminal' })
 
 -- Setup lazy.nvim
