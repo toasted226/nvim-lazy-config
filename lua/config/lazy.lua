@@ -25,7 +25,7 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 
 vim.keymap.set('n', '<leader>fe', ':Ex <CR>', { desc = 'Explore' })
-vim.keymap.set('n', '<leader>t', ':terminal <CR>', { desc = 'Terminal' })
+-- vim.keymap.set('n', '<leader>t', ':terminal <CR>', { desc = 'Terminal' })
 
 -- Setup lazy.nvim
 require("lazy").setup({
@@ -42,15 +42,57 @@ require("lazy").setup({
 
 require("monokai-pro").setup({
 	filter = "pro",
+	transparent = true,
 })
 
 vim.cmd([[colorscheme monokai-pro]])
 
-vim.cmd([[highlight Normal guibg=NONE ctermbg=NONE]])
-vim.cmd([[highlight NonText guibg=NONE ctermbg=NONE]])
-vim.cmd([[highlight LineNr guibg=NONE ctermbg=NONE]])
-vim.cmd([[highlight SignColumn guibg=NONE ctermbg=NONE]])
-
 vim.opt.clipboard = "unnamedplus"
 vim.opt.termguicolors = true
-vim.g.airline_powerline_fonts = 1
+
+vim.cmd [[
+	" General UI
+	highlight! Normal guibg=none ctermbg=none
+	highlight! NormalNC guibg=none ctermbg=none
+	highlight! FloatBorder guibg=NONE ctermbg=NONE
+	highlight! NormalFloat guibg=NONE ctermbg=NONE
+	highlight! NonText guibg=none ctermbg=none
+	highlight! LineNr ctermbg=none guibg=none
+	highlight! SignColumn ctermbg=none guibg=none
+	highlight! Keyword ctermbg=none guibg=none
+	highlight! String ctermbg=none guibg=none
+	highlight! LspReferenceText ctermbg=none guibg=none
+	highlight! IlluminatedWordText ctermbg=none  guibg=none
+
+	" LSP hover and signature help windows
+	highlight! LspInfoBorder guibg=NONE ctermbg=NONE
+	highlight! LspFloatWinBorder guibg=NONE ctermbg=NONE
+	highlight! LspReferenceRead ctermbg=none guibg=none
+	highlight! IlluminatedWordRead ctermbg=none guibg=none
+
+	highlight! LspReferenceWrite ctermbg=none guibg=none
+	highlight! IlluminatedWordRead ctermbg=none guibg=none
+
+	" Completion menu and borders
+	highlight! PmenuBorder guibg=NONE ctermbg=NONE
+
+	" For nvim-cmp users
+	highlight! CmpBorder guibg=NONE ctermbg=NONE
+	highlight! CmpDocBorder guibg=NONE ctermbg=NONE
+
+	highlight! BufferLineBackground guibg=none ctermbg=none
+	highlight! EndOfBuffer guibg=none ctermbg=none
+
+	highlight! TelescopeNormal guibg=none ctermbg=none
+	highlight! TelescopePromptNormal guibg=NONE ctermbg=NONE
+	highlight! TelescopeResultsNormal guibg=NONE ctermbg=NONE
+	highlight! TelescopePreviewNormal guibg=NONE ctermbg=NONE
+	highlight! TelescopePromptBorder guibg=NONE ctermbg=NONE
+	highlight! TelescopeResultsBorder guibg=NONE ctermbg=NONE
+	highlight! TelescopePreviewBorder guibg=NONE ctermbg=NONE
+]]
+
+--	highlight! Pmenu guibg=NONE ctermbg=NONE
+--	highlight! CmpPmenu guibg=NONE ctermbg=NONE
+--	highlight! CmpPmenuSel guibg=NONE ctermbg=NONE
+--	highlight! PmenuSel guibg=NONE ctermbg=NONE
