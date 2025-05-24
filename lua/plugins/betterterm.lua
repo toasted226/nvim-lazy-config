@@ -11,22 +11,6 @@ return {
 			desc = 'Open BetterTerm 0',
 		},
 		{
-			mode = { 'n', 't' },
-			'<leader>2',
-			function()
-			require('betterTerm').open(1)
-			end,
-			desc = 'Open BetterTerm 1',
-		},
-		{
-			mode = { 'n', 't' },
-			'<leader>3',
-			function()
-			require('betterTerm').open(2)
-			end,
-			desc = 'Open BetterTerm 2',
-		},
-		{
 			'<leader>ft',
 			function()
 				require('betterTerm').select()
