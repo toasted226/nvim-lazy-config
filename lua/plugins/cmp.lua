@@ -115,6 +115,77 @@ return {
 			}
 		})
 
+		-- HTML LSP
+		local capabilities = vim.lsp.protocol.make_client_capabilities()
+		capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+		vim.lsp.config('html', {
+			capabilities = capabilities,
+			cmp = { "vscode-html-language-server", "--stdio" },
+			filetypes = { "html", "templ" },
+			init_options = {
+				configurationSection = { "html", "css", "javascript" },
+				embeddedLanguages = {
+					css = true,
+					javascript = true
+				},
+				provideFormatter = true
+			},
+			root_markers = { "package.json", ".git" },
+			settings = {},
+		})
+		vim.lsp.enable("html")
+
+		-- Typescript LSP
+		vim.lsp.config("ts_ls", {
+			cmd = { "typescript-language-server", "--stdio" },
+			filetypes = {
+				"javascript",
+				"javascriptreact",
+				"javascript.jsx",
+				"typescript",
+				"typescriptreact",
+				"typescript.tsx",
+			},
+			init_options = {
+				hostInfo = "neovim"
+			},
+			root_markers = {
+				"tsconfig.json",
+				"jsconfig.json",
+				"package.json",
+				".git",
+			},
+		})
+		vim.lsp.enable("ts_ls")
+
+		-- ESLint
+		local base_on_attach = vim.lsp.config.eslint.on_attach
+		vim.lsp.config("eslint", {
+			cmd = { "vscode-eslint-language-server", "--stdio" },
+			filetypes = {
+				"javascript",
+				"javascriptreact",
+				"javascript.jsx",
+				"typescript",
+				"typescriptreact",
+				"typescript.tsx",
+				"vue",
+				"svelte",
+				"astro"
+			},
+			on_attach = function(client, bufnr)
+				if not base_on_attach then return end
+				
+				base_on_attach(client, bufnr)
+				vim.api.nvim_create_autocmd("BufWritePre", {
+					buffer = bufnr,
+					command = "LspEslintFixAll",
+				})
+			end,
+		})
+		vim.lsp.enable("eslint")
+
 		-- Zig LSP
 		require('lspconfig').zls.setup{}
 

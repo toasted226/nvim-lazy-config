@@ -47,7 +47,7 @@ require("monokai-pro").setup({
 
 vim.cmd([[colorscheme monokai-pro]])
 
-vim.opt.clipboard = "unnamedplus"
+--vim.opt.clipboard = "unnamedplus"
 vim.opt.termguicolors = true
 
 vim.cmd [[
