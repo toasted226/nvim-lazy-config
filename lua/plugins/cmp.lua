@@ -70,6 +70,8 @@ return {
 		-- This will avoid an annoying layout shift in the screen
 		vim.opt.signcolumn = 'yes'
 
+		local lspconfig = require('lspconfig')
+
 		-- Add cmp_nvim_lsp capabilities settings to lspconfig
 		-- This should be executed before you configure any language server
     	local lspconfig_defaults = require('lspconfig').util.default_config
@@ -115,6 +117,54 @@ return {
 			}
 		})
 
+		require('lspconfig').ts_ls.setup({
+			cmd = { "typescript-language-server", "--stdio" },
+			filetypes = {
+				"javascript",
+				"javascriptreact",
+				"javascript.jsx",
+				"typescript",
+				"typescriptreact",
+				"typescript.tsx",
+			},
+			init_options = {
+				hostInfo = "neovim"
+			},
+			root_markers = {
+				"tsconfig.json",
+				"jsconfig.json",
+				"package.json",
+				".git",
+			},
+		})
+
+		local base_on_attach = lspconfig.util.default_config.on_attach
+
+		require('lspconfig').eslint.setup({
+			cmd = { "vscode-eslint-language-server", "--stdio" },
+  			filetypes = {
+    			"javascript",
+				"javascriptreact",
+				"javascript.jsx",
+				"typescript",
+				"typescriptreact",
+				"typescript.tsx",
+				"vue",
+				"svelte",
+				"astro",
+  			},
+			on_attach = function(client, bufnr)
+				if base_on_attach then
+			  		base_on_attach(client, bufnr)
+				end
+
+				vim.api.nvim_create_autocmd("BufWritePre", {
+			  		buffer = bufnr,
+			  		command = "EslintFixAll",
+				})
+		  	end,
+		})
+
 		-- HTML LSP
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
 		capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -137,54 +187,54 @@ return {
 		vim.lsp.enable("html")
 
 		-- Typescript LSP
-		vim.lsp.config("ts_ls", {
-			cmd = { "typescript-language-server", "--stdio" },
-			filetypes = {
-				"javascript",
-				"javascriptreact",
-				"javascript.jsx",
-				"typescript",
-				"typescriptreact",
-				"typescript.tsx",
-			},
-			init_options = {
-				hostInfo = "neovim"
-			},
-			root_markers = {
-				"tsconfig.json",
-				"jsconfig.json",
-				"package.json",
-				".git",
-			},
-		})
-		vim.lsp.enable("ts_ls")
+	    vim.lsp.config("ts_ls", {
+	    	cmd = { "typescript-language-server", "--stdio" },
+	    	filetypes = {
+	    		"javascript",
+	    		"javascriptreact",
+	    		"javascript.jsx",
+	    		"typescript",
+	    		"typescriptreact",
+	    		"typescript.tsx",
+	    	},
+	    	init_options = {
+	    		hostInfo = "neovim"
+	    	},
+	    	root_markers = {
+	    		"tsconfig.json",
+	    		"jsconfig.json",
+	    		"package.json",
+	    		".git",
+	    	},
+	    })
+	    vim.lsp.enable("ts_ls")
 
 		-- ESLint
-		local base_on_attach = vim.lsp.config.eslint.on_attach
-		vim.lsp.config("eslint", {
-			cmd = { "vscode-eslint-language-server", "--stdio" },
-			filetypes = {
-				"javascript",
-				"javascriptreact",
-				"javascript.jsx",
-				"typescript",
-				"typescriptreact",
-				"typescript.tsx",
-				"vue",
-				"svelte",
-				"astro"
-			},
-			on_attach = function(client, bufnr)
-				if not base_on_attach then return end
-				
-				base_on_attach(client, bufnr)
-				vim.api.nvim_create_autocmd("BufWritePre", {
-					buffer = bufnr,
-					command = "LspEslintFixAll",
-				})
-			end,
-		})
-		vim.lsp.enable("eslint")
+	    local base_on_attach = vim.lsp.config.eslint.on_attach
+	    vim.lsp.config("eslint", {
+	    	cmd = { "vscode-eslint-language-server", "--stdio" },
+	    	filetypes = {
+	    		"javascript",
+	    		"javascriptreact",
+	    		"javascript.jsx",
+	    		"typescript",
+	    		"typescriptreact",
+	    		"typescript.tsx",
+	    		"vue",
+	    		"svelte",
+	    		"astro"
+	    	},
+	    	on_attach = function(client, bufnr)
+	    		if not base_on_attach then return end
+	    		
+	    		base_on_attach(client, bufnr)
+	    		vim.api.nvim_create_autocmd("BufWritePre", {
+	    			buffer = bufnr,
+	    			command = "LspEslintFixAll",
+	    		})
+	    	end,
+	    })
+	    vim.lsp.enable("eslint")
 
 		-- Zig LSP
 		require('lspconfig').zls.setup{}

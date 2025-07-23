@@ -19,10 +19,11 @@ vim.opt.rtp:prepend(lazypath)
 -- loading lazy.nvim so that mappings are correct.
 -- This is also a good place to setup other settings (vim.opt)
 vim.g.mapleader = ","
-vim.g.maplocalleader = "\\"
+vim.g.maplocalleader = "'"
 vim.wo.relativenumber = true
-vim.opt.tabstop = 4
+vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
+vim.opt.smarttab = true
 
 vim.keymap.set('n', '<leader>fe', ':Ex <CR>', { desc = 'Explore' })
 -- vim.keymap.set('n', '<leader>t', ':terminal <CR>', { desc = 'Terminal' })
@@ -46,6 +47,18 @@ require("monokai-pro").setup({
 })
 
 vim.cmd([[colorscheme monokai-pro]])
+
+vim.keymap.set('n', '<leader>k', function()
+  vim.diagnostic.config({ virtual_lines = { current_line = true }, virtual_text = false })
+
+  vim.api.nvim_create_autocmd('CursorMoved', {
+    group = vim.api.nvim_create_augroup('line-diagnostics', { clear = true }),
+    callback = function()
+      vim.diagnostic.config({ virtual_lines = false, virtual_text = true })
+      return true
+    end,
+  })
+end)
 
 vim.g.clipboard = {
 	name = "wl-clipboard",
